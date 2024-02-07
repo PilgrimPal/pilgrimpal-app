@@ -1,3 +1,5 @@
+include .env 
+
 .PHONY: init format dev build_apk build_runner
 
 init:
