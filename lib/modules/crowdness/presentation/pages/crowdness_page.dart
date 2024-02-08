@@ -15,7 +15,7 @@ class _CrowdnessPageState extends State<CrowdnessPage> {
 
   @override
   void initState() {
-    _crowdnessProvider = Provider.of<CrowdnessProvider>(context, listen: false);
+    _crowdnessProvider = context.read<CrowdnessProvider>();
     super.initState();
   }
 
