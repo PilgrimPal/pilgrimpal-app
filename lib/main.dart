@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:pilgrimpal_app/core/env.dart';
+import 'package:flutter/services.dart';
 import 'package:pilgrimpal_app/core/routes.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+  );
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   runApp(const MyApp());
 }
 
