@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pilgrimpal_app/modules/crowdness/data/dtos/crowd_detail.dart';
@@ -16,6 +17,7 @@ class _CrowdDetailPageState extends State<CrowdDetailPage> {
   late String _areaId;
   late CrowdDetail _crowdDetail;
   final DateFormat _dateFormatter = DateFormat("E, MM dd yyyy, HH:mm:ss");
+  final DateFormat _timeSeriesFormat = DateFormat("HH:mm");
 
   @override
   void initState() {
@@ -130,6 +132,80 @@ class _CrowdDetailPageState extends State<CrowdDetailPage> {
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                  const Text(
+                    "Crowd Density from the past 30 minutes",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 6, 16, 12),
+                    child: AspectRatio(
+                      aspectRatio: 4 / 3,
+                      child: LineChart(
+                        LineChartData(
+                          lineTouchData: const LineTouchData(enabled: false),
+                          borderData: FlBorderData(
+                            border: const Border(
+                              left: BorderSide(),
+                              bottom: BorderSide(),
+                            ),
+                          ),
+                          minX: 0,
+                          minY: 0,
+                          maxY: 100,
+                          titlesData: FlTitlesData(
+                            show: true,
+                            topTitles: const AxisTitles(
+                              sideTitles: SideTitles(showTitles: false),
+                            ),
+                            rightTitles: const AxisTitles(
+                              sideTitles: SideTitles(showTitles: false),
+                            ),
+                            leftTitles: const AxisTitles(
+                              axisNameSize: 20,
+                              axisNameWidget: Text("Density (%)"),
+                            ),
+                            bottomTitles: AxisTitles(
+                              axisNameSize: 20,
+                              axisNameWidget: const Text("Time"),
+                              sideTitles: SideTitles(
+                                showTitles: true,
+                                interval: _crowdDetail.crowdHistory.length * 6,
+                                getTitlesWidget: (value, meta) {
+                                  var time = _crowdDetail
+                                      .crowdHistory.last.updatedAt
+                                      .add(Duration(seconds: value.toInt()));
+                                  return SideTitleWidget(
+                                    axisSide: meta.axisSide,
+                                    child: Text(_timeSeriesFormat.format(time)),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          lineBarsData: [
+                            LineChartBarData(
+                              color: Colors.deepPurple,
+                              spots: _crowdDetail.crowdHistory.reversed.map(
+                                (record) {
+                                  var x = record.updatedAt
+                                      .difference(_crowdDetail
+                                          .crowdHistory.last.updatedAt)
+                                      .inSeconds
+                                      .toDouble();
+                                  return FlSpot(
+                                    x,
+                                    record.crowdDensity,
+                                  );
+                                },
+                              ).toList(),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ],
