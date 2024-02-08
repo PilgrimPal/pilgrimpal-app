@@ -167,12 +167,11 @@ class _CrowdDetailPageState extends State<CrowdDetailPage> {
                     ),
                     const SizedBox(height: 20),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(12, 6, 16, 12),
+                      padding: const EdgeInsets.fromLTRB(4, 6, 16, 12),
                       child: AspectRatio(
                         aspectRatio: 4 / 3,
                         child: LineChart(
                           LineChartData(
-                            lineTouchData: const LineTouchData(enabled: false),
                             borderData: FlBorderData(
                               border: const Border(
                                 left: BorderSide(),
@@ -190,9 +189,20 @@ class _CrowdDetailPageState extends State<CrowdDetailPage> {
                               rightTitles: const AxisTitles(
                                 sideTitles: SideTitles(showTitles: false),
                               ),
-                              leftTitles: const AxisTitles(
+                              leftTitles: AxisTitles(
                                 axisNameSize: 20,
-                                axisNameWidget: Text("Density (%)"),
+                                axisNameWidget: const Text("Density (%)"),
+                                sideTitles: SideTitles(
+                                  showTitles: true,
+                                  getTitlesWidget: (value, meta) =>
+                                      SideTitleWidget(
+                                    axisSide: meta.axisSide,
+                                    child: Text(
+                                      value.toInt().toString(),
+                                      style: const TextStyle(fontSize: 10),
+                                    ),
+                                  ),
+                                ),
                               ),
                               bottomTitles: AxisTitles(
                                 axisNameSize: 20,
