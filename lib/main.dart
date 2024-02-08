@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pilgrimpal_app/core/injection.dart' as di;
 import 'package:pilgrimpal_app/core/routes.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
   );
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
+  await di.init();
+
   runApp(const MyApp());
 }
 

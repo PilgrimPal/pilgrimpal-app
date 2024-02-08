@@ -43,6 +43,7 @@ dependencies:
   shared_preferences: ^2.2.2
   timeago: ^3.6.1
   envied: ^0.5.3
+  uuid: ^4.3.3
 
 dev_dependencies:
   flutter_test:

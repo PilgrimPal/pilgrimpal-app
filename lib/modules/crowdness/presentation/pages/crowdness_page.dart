@@ -9,6 +9,16 @@ class CrowdnessPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Crowdness"),
       ),
+      body: GridView.count(
+        crossAxisCount: 1,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 4,
+        children: [
+          InkWell(
+            onTap: () {},
+          ),
+        ],
+      ),
     );
   }
 }
