@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pilgrimpal_app/common/widgets/app_drawer.dart';
+import 'package:pilgrimpal_app/modules/common/widgets/app_drawer.dart';
 
 class HomePage extends StatelessWidget {
   static const routeName = "/home";

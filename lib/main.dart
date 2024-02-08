@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pilgrimpal_app/routes.dart';
+import 'package:pilgrimpal_app/core/routes.dart';
 
 void main() {
   runApp(const MyApp());
