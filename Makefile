@@ -1,6 +1,6 @@
 include .env 
 
-.PHONY: init format dev build_apk build_runner
+.PHONY: init format dev launch_icon build_apk build_runner
 
 init:
 	flutter clean
@@ -15,6 +15,9 @@ dev:
 
 build_apk:
 	flutter build apk
+
+launch_icon:
+	dart run flutter_launcher_icons
 
 build_runner:
 	dart run build_runner build --delete-conflicting-outputs
