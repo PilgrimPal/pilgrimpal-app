@@ -24,8 +24,6 @@ class _AssitantPageState extends State<AssistantPage> {
   }
 
   String formatTime(DateTime dateTime) {
-    print(DateTime.now());
-    print(dateTime);
     if (DateUtils.isSameDay(DateTime.now(), dateTime)) {
       return _sameDayTimeFormat.format(dateTime);
     }

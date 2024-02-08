@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 class ChatTitle {
   final String id;
   final DateTime createdAt;
