@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pilgrimpal_app/core/env.dart';
 import 'package:pilgrimpal_app/core/routes.dart';
 
 void main() {
