@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () => Navigator.of(context).pushNamed(assistantRoute),
               child: const Card(
                 child: Center(
                   child: Column(
