@@ -15,6 +15,9 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   late String _title;
 
   final ScrollController _scrollController = ScrollController();
+  final _sendChatFormKey = GlobalKey<FormState>();
+
+  String? _prompt;
 
   @override
   void initState() {
@@ -29,6 +32,10 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     _sessionId = args["sessionId"]!;
     _title = args["title"]!;
     super.didChangeDependencies();
+  }
+
+  void sendChat() {
+    print(_prompt);
   }
 
   @override
@@ -87,7 +94,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   constraints: BoxConstraints.loose(
-                                    const Size.fromWidth(320),
+                                    const Size.fromWidth(280),
                                   ),
                                   child: Text(
                                     _assistantProvider
@@ -119,7 +126,53 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                     top: BorderSide(width: 1),
                   ),
                 ),
-                constraints: BoxConstraints.tight(const Size.fromHeight(100)),
+                constraints: BoxConstraints.tight(const Size.fromHeight(140)),
+                child: Form(
+                  key: _sendChatFormKey,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            keyboardType: TextInputType.multiline,
+                            maxLines: 3,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
+                              contentPadding: const EdgeInsets.all(6),
+                            ),
+                            onChanged: (String? val) {
+                              _prompt = val?.trim();
+                            },
+                            onSaved: (String? val) {
+                              _prompt = val?.trim();
+                            },
+                            validator: (val) {
+                              if (val == null || val.trim().isEmpty) {
+                                return "Please enter a name for this wallet";
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        IconButton.filled(
+                          onPressed: sendChat,
+                          icon: const Icon(
+                            Icons.arrow_upward,
+                            color: Colors.white,
+                          ),
+                          color: Colors.deepPurpleAccent,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ],
           );
