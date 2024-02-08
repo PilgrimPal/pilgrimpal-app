@@ -1,5 +1,6 @@
 import 'package:pilgrimpal_app/core/clients/http.dart';
 import 'package:pilgrimpal_app/modules/assistant/data/dtos/get_chat_titles_response.dart';
+import 'package:pilgrimpal_app/modules/assistant/data/dtos/send_chat_response.dart';
 import 'package:pilgrimpal_app/modules/assistant/data/viewmodels/chat_detail.dart';
 import 'package:pilgrimpal_app/modules/assistant/data/viewmodels/chat_title.dart';
 
@@ -20,5 +21,18 @@ class AssistantDatasource {
     final res = await http.client.get<Map<String, dynamic>>(uri);
 
     return ChatDetail.fromMap(res.data!);
+  }
+
+  Future<SendChatResponse> sendChat(String sessionId, String prompt) async {
+    const uri = "/api/chatbot/chat";
+    final res = await http.client.post(
+      uri,
+      data: {
+        "sessionId": sessionId,
+        "prompt": prompt,
+      },
+    );
+
+    return SendChatResponse.fromJson(res.data!);
   }
 }

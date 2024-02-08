@@ -34,9 +34,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     super.didChangeDependencies();
   }
 
-  void sendChat() {
-    print(_prompt);
-  }
+  Future<void> sendChat() async {}
 
   @override
   Widget build(BuildContext context) {
