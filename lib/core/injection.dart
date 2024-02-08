@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pilgrimpal_app/core/clients/http.dart';
 import 'package:pilgrimpal_app/core/env.dart';
+import 'package:pilgrimpal_app/modules/assistant/data/datasources/assistant_datasource.dart';
 import 'package:pilgrimpal_app/modules/crowdness/data/datasources/crowdness_datasource.dart';
 import 'package:pilgrimpal_app/modules/crowdness/data/repositories/crowdness_repository.dart';
 import 'package:pilgrimpal_app/modules/crowdness/presentation/bloc/providers/crowdness_provider.dart';
@@ -14,6 +15,9 @@ Future<void> init() async {
   // Datasources
   sl.registerFactory<CrowdnessDatasource>(
     () => CrowdnessDatasource(http: sl()),
+  );
+  sl.registerFactory<AssistantDatasource>(
+    () => AssistantDatasource(http: sl()),
   );
 
   // Repositories
