@@ -13,7 +13,7 @@ class CrowdnessRepository {
   Future<Either<Failure, Map<String, double>>> getCrowdAreas() async {
     try {
       final res = await datasource.getCrowdAreas();
-      return Right(res.data!);
+      return Right(res);
     } on SocketException {
       return Left(Failure(message: 'No Internet Connection'));
     } on DioException catch (e) {

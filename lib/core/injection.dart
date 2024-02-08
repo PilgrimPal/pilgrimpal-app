@@ -4,6 +4,7 @@ import 'package:pilgrimpal_app/core/clients/http.dart';
 import 'package:pilgrimpal_app/core/env.dart';
 import 'package:pilgrimpal_app/modules/crowdness/data/datasources/crowdness_datasource.dart';
 import 'package:pilgrimpal_app/modules/crowdness/data/repositories/crowdness_repository.dart';
+import 'package:pilgrimpal_app/modules/crowdness/presentation/bloc/providers/crowdness_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -18,6 +19,11 @@ Future<void> init() async {
   // Repositories
   sl.registerFactory<CrowdnessRepository>(
     () => CrowdnessRepository(datasource: sl()),
+  );
+
+  // Providers
+  sl.registerFactory<CrowdnessProvider>(
+    () => CrowdnessProvider(repository: sl()),
   );
 
   // Externals and third parties
