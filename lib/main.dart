@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pilgrimpal_app/core/injection.dart' as di;
 import 'package:pilgrimpal_app/core/routes.dart';
+import 'package:pilgrimpal_app/modules/assistant/presentation/bloc/providers/assistant_provider.dart';
 import 'package:pilgrimpal_app/modules/crowdness/presentation/bloc/providers/crowdness_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => di.sl<CrowdnessProvider>()),
+        ChangeNotifierProvider(create: (_) => di.sl<AssistantProvider>()),
       ],
       child: MaterialApp(
         title: 'PilgrimPal',
