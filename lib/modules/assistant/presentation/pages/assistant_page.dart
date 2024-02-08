@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pilgrimpal_app/core/routes.dart';
 import 'package:pilgrimpal_app/modules/assistant/presentation/bloc/providers/assistant_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -49,6 +50,19 @@ class _AssitantPageState extends State<AssistantPage> {
               child: ListView.builder(
                 shrinkWrap: true,
                 itemBuilder: (ctx, i) => ListTile(
+                  onTap: ([bool mounted = true]) async {
+                    await Navigator.of(context).pushNamed(
+                      chatDetailRoute,
+                      arguments: {
+                        "sessionId": _assistantProvider.chatTitles[i].sessionId,
+                        "title": _assistantProvider.chatTitles[i].title,
+                      },
+                    );
+
+                    if (mounted) {
+                      await _assistantProvider.getChatTitles();
+                    }
+                  },
                   tileColor: Theme.of(context).cardColor,
                   title: Text(
                     _assistantProvider.chatTitles[i].title,

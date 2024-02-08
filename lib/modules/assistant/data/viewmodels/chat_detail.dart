@@ -6,7 +6,9 @@ class ChatDetail {
 
   factory ChatDetail.fromMap(Map<String, dynamic> map) => ChatDetail(
         title: map["title"],
-        messages: map["messages"].map((msg) => ChatMessage.fromMap(msg)),
+        messages: List<ChatMessage>.from(
+          map["messages"].map((msg) => ChatMessage.fromMap(msg)),
+        ),
       );
 }
 
