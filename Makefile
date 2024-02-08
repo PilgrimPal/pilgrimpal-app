@@ -5,6 +5,7 @@ include .env
 init:
 	flutter clean
 	flutter pub get
+	make build_runner
 
 format:
 	dart format .
