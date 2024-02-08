@@ -42,7 +42,7 @@ class _AssitantPageState extends State<AssistantPage> {
       return;
     }
 
-    final sessionId = Uuid().v4();
+    final sessionId = const Uuid().v4();
 
     await _assistantProvider.sendChat(sessionId, _prompt!);
 
