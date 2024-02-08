@@ -16,6 +16,9 @@ dev:
 build_apk:
 	flutter build apk
 
+build_apk_all:
+	flutter build apk --split-per-abi
+
 launch_icon:
 	dart run flutter_launcher_icons
 
