@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pilgrimpal_app/modules/assistant/data/viewmodels/chat_detail.dart';
 import 'package:pilgrimpal_app/modules/assistant/presentation/bloc/providers/assistant_provider.dart';
+import 'package:pilgrimpal_app/modules/assistant/presentation/bloc/states/send_chat_state.dart';
 import 'package:provider/provider.dart';
 
 class ChatDetailPage extends StatefulWidget {
@@ -11,6 +13,7 @@ class ChatDetailPage extends StatefulWidget {
 
 class _ChatDetailPageState extends State<ChatDetailPage> {
   late AssistantProvider _assistantProvider;
+  late ChatDetail _chatDetail;
   late String _sessionId;
   late String _title;
 
@@ -34,7 +37,33 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     super.didChangeDependencies();
   }
 
-  Future<void> sendChat() async {}
+  Future<void> sendChat() async {
+    if (!_sendChatFormKey.currentState!.validate()) {
+      return;
+    }
+
+    await _assistantProvider.sendChat(_sessionId, _prompt!);
+
+    if (_assistantProvider.sendChatState is SendChatOkState) {
+      await _assistantProvider.getChatDetail(_sessionId);
+      setState(() {
+        _chatDetail = _assistantProvider.chatDetail;
+      });
+
+      _scrollController.animateTo(_scrollController.position.minScrollExtent,
+          duration: const Duration(seconds: 1), curve: Curves.decelerate);
+      _sendChatFormKey.currentState?.reset();
+    } else {
+      final message =
+          (_assistantProvider.sendChatState as SendChatFailureState).message;
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(message)));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +72,13 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       body: RefreshIndicator(
         onRefresh: () async {
           await _assistantProvider.getChatDetail(_sessionId);
+          setState(() {
+            _chatDetail = _assistantProvider.chatDetail;
+          });
         },
         child: FutureBuilder(future: Future(() async {
           await _assistantProvider.getChatDetail(_sessionId);
+          _chatDetail = _assistantProvider.chatDetail;
           _scrollController.animateTo(
               _scrollController.position.maxScrollExtent,
               duration: const Duration(seconds: 1),
@@ -73,18 +106,15 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                           itemBuilder: (ctx, i) => Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Row(
-                              mainAxisAlignment: _assistantProvider
-                                          .chatDetail.messages[i].type ==
-                                      "ai"
-                                  ? MainAxisAlignment.start
-                                  : MainAxisAlignment.end,
+                              mainAxisAlignment:
+                                  _chatDetail.messages[i].type == "ai"
+                                      ? MainAxisAlignment.start
+                                      : MainAxisAlignment.end,
                               children: [
                                 Container(
                                   padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
-                                    color: _assistantProvider
-                                                .chatDetail.messages[i].type ==
-                                            "ai"
+                                    color: _chatDetail.messages[i].type == "ai"
                                         ? Colors.deepPurpleAccent
                                         : Theme.of(context)
                                             .colorScheme
@@ -95,8 +125,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                                     const Size.fromWidth(280),
                                   ),
                                   child: Text(
-                                    _assistantProvider
-                                        .chatDetail.messages[i].content,
+                                    _chatDetail.messages[i].content,
                                     style: TextStyle(
                                       fontSize: 18,
                                       color: _assistantProvider.chatDetail
@@ -110,8 +139,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                               ],
                             ),
                           ),
-                          itemCount:
-                              _assistantProvider.chatDetail.messages.length,
+                          itemCount: _chatDetail.messages.length,
                         ),
                       ],
                     ),
@@ -152,21 +180,24 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                             },
                             validator: (val) {
                               if (val == null || val.trim().isEmpty) {
-                                return "Please enter a name for this wallet";
+                                return "Can't be empty";
                               }
                               return null;
                             },
                           ),
                         ),
                         const SizedBox(width: 10),
-                        IconButton.filled(
-                          onPressed: sendChat,
-                          icon: const Icon(
-                            Icons.arrow_upward,
-                            color: Colors.white,
-                          ),
-                          color: Colors.deepPurpleAccent,
-                        ),
+                        Provider.of<AssistantProvider>(context).sendChatState
+                                is SendChatLoadingState
+                            ? const CircularProgressIndicator()
+                            : IconButton.filled(
+                                onPressed: sendChat,
+                                icon: const Icon(
+                                  Icons.arrow_upward,
+                                  color: Colors.white,
+                                ),
+                                color: Colors.deepPurpleAccent,
+                              ),
                       ],
                     ),
                   ),

@@ -28,7 +28,7 @@ class AssistantDatasource {
     final res = await http.client.post(
       uri,
       data: {
-        "sessionId": sessionId,
+        "session_id": sessionId,
         "prompt": prompt,
       },
     );

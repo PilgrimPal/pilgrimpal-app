@@ -40,11 +40,21 @@ class AssistantProvider with ChangeNotifier {
   }
 
   Future<void> sendChat(String sessionId, String prompt) async {
+    _sendChatState = SendChatLoadingState();
+
+    notifyListeners();
+
     final res = await repository.sendChat(sessionId, prompt);
     res.fold(
       (failure) => _sendChatState = SendChatFailureState(failure.message),
       (res) => _sendChatState = SendChatOkState(),
     );
+    notifyListeners();
+  }
+
+  void resetStates() {
+    _sendChatState = SendChatInitialState();
+
     notifyListeners();
   }
 }
