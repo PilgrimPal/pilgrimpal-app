@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pilgrimpal_app/core/routes.dart';
 import 'package:pilgrimpal_app/modules/crowdness/presentation/bloc/providers/crowdness_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -51,7 +52,16 @@ class _CrowdnessPageState extends State<CrowdnessPage> {
                   crossAxisCount: 2,
                 ),
                 itemBuilder: (ctx, i) => InkWell(
-                  onTap: () {},
+                  onTap: ([bool mounted = true]) async {
+                    await Navigator.of(context).pushNamed(
+                      crowdDetailRoute,
+                      arguments: keys[i],
+                    );
+
+                    if (mounted) {
+                      await _crowdnessProvider?.getCrowdAreas();
+                    }
+                  },
                   child: Card(
                     child: Center(
                       child: Column(

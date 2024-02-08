@@ -32,4 +32,8 @@ class CrowdnessProvider with ChangeNotifier {
 
     notifyListeners();
   }
+
+  void resetCrowdDetail() {
+    _crowdDetail = null;
+  }
 }

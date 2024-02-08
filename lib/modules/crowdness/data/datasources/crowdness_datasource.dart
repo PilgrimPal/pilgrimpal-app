@@ -15,7 +15,7 @@ class CrowdnessDatasource {
   }
 
   Future<CrowdDetail> getCrowdDetail(String areaId) async {
-    final uri = "/api/crowd/areas/$areaId";
+    final uri = "/api/crowd/$areaId";
     final res = await http.client.get<Map<String, dynamic>>(uri);
 
     return CrowdDetail.fromJson(res.data!);
